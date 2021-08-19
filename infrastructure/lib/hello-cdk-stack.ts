@@ -6,7 +6,7 @@ export class HelloCdkStack extends cdk.Stack {
     super(scope, id, props);
 
     new s3.Bucket(this, 'TestBucket', {
-      versioned: true
+      versioned: false
     });
   }
 }

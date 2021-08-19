@@ -1,13 +1,9 @@
-import { expect as expectCDK, matchTemplate, MatchStyle } from '@aws-cdk/assert';
+import '@aws-cdk/assert/jest';
 import * as cdk from '@aws-cdk/core';
-import * as Infrastructure from '../lib/infrastructure-stack';
+import * as Infrastructure from '../lib/hello-cdk-stack';
 
-test('Empty Stack', () => {
+test('Stack has a bucket', () => {
     const app = new cdk.App();
-    // WHEN
-    const stack = new Infrastructure.InfrastructureStack(app, 'MyTestStack');
-    // THEN
-    expectCDK(stack).to(matchTemplate({
-      "Resources": {}
-    }, MatchStyle.EXACT))
+    const stack = new Infrastructure.HelloCdkStack(app, 'MyTestStack');
+    expect(stack).toHaveResource('AWS::S3::Bucket');
 });

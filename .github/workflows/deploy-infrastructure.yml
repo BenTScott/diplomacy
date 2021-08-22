@@ -8,7 +8,7 @@ on:
       - ".github/workflows/**"
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:

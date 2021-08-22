@@ -4,4 +4,4 @@ import * as cdk from "@aws-cdk/core";
 import { RepoStack } from "../lib/repo-stack";
 
 const app = new cdk.App();
-new RepoStack(app, "RepoStack");
+new RepoStack(app, "DiplomacyRepoStack");

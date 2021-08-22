@@ -7,6 +7,7 @@ export class RepoStack extends Stack {
 
     var repo = new Repository(this, "Repository", {
       imageTagMutability: TagMutability.IMMUTABLE,
+      repositoryName: "diplomacy",
     });
 
     repo.addLifecycleRule({ maxImageAge: Duration.days(30) });

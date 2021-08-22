@@ -25,12 +25,17 @@ jobs:
         with:
           node-version: "15"
 
-      - name: Build and Test CDK Project
+      - name: Install Dependencies
         working-directory: infrastructure
-        run: npm ci |
-          npm run build
-          npm run test
-          npx cdk synth
+        run: npm ci
+
+      - name: Build CDK Project
+        working-directory: infrastructure
+        run: npm run build
+
+      - name: Test CDK Project
+        working-directory: infrastructure
+        run: npm run test
 
       - name: Deploy CDK
         working-directory: infrastructure

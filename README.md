@@ -1,1 +1,1 @@
-# diplomacy
+# Diplomacy

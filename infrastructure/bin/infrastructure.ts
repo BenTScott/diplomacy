@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-import 'source-map-support/register';
-import * as cdk from '@aws-cdk/core';
-import { HelloCdkStack } from '../lib/hello-cdk-stack';
+import "source-map-support/register";
+import * as cdk from "@aws-cdk/core";
+import { RepoStack } from "../lib/repo-stack";
 
 const app = new cdk.App();
-new HelloCdkStack(app, 'HelloStack');
+new RepoStack(app, "RepoStack");

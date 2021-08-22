@@ -1,9 +1,9 @@
-import '@aws-cdk/assert/jest';
-import * as cdk from '@aws-cdk/core';
-import * as Infrastructure from '../lib/hello-cdk-stack';
+import "@aws-cdk/assert/jest";
+import { App } from "@aws-cdk/core";
+import { RepoStack } from "../lib/repo-stack";
 
-test('Stack has a bucket', () => {
-    const app = new cdk.App();
-    const stack = new Infrastructure.HelloCdkStack(app, 'MyTestStack');
-    expect(stack).toHaveResource('AWS::S3::Bucket');
+test("Stack has a repo", () => {
+  const app = new App();
+  const stack = new RepoStack(app, "TestRepoStack");
+  expect(stack).toHaveResource("AWS::ECR::Repository");
 });

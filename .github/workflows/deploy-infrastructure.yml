@@ -2,9 +2,9 @@ name: Deploy CDK
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'infrastructure/**'
+      - "infrastructure/**"
 
 jobs:
   build:
@@ -19,19 +19,18 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
-      
+
       - uses: actions/setup-node@v2
         with:
-          node-version: '15'
+          node-version: "15"
 
       - name: Build and Test CDK Project
         working-directory: infrastructure
-        run: npm ci
-        run: npm run build
-        run: npm run test
-        run: npx cdk synth
+        run: npm ci |
+          npm run build
+          npm run test
+          npx cdk synth
 
       - name: Deploy CDK
         working-directory: infrastructure
         run: npx cdk deploy
-

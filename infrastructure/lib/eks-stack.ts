@@ -5,13 +5,20 @@ import {
   KubernetesManifest,
   KubernetesVersion,
 } from "@aws-cdk/aws-eks";
+import { Role, AccountRootPrincipal } from "@aws-cdk/aws-iam";
 
 export class EksStack extends Stack {
   constructor(scope: App, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    var cluster = new FargateCluster(this, "FargateCluster", {
+    const masterRole = new Role(this, "ClusterMasterRole", {
+      assumedBy: new AccountRootPrincipal(),
+    });
+
+    var cluster = new FargateCluster(this, "DiplomacyCluster", {
       version: KubernetesVersion.V1_21,
+      mastersRole: masterRole,
+      clusterName: "DiplomacyCluster",
     });
 
     cluster.addHelmChart("NginxIngress", {

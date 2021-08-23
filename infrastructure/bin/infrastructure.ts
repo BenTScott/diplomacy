@@ -5,5 +5,5 @@ import { RepoStack } from "../lib/repo-stack";
 import { EksStack } from "../lib/eks-stack";
 
 const app = new cdk.App();
-new RepoStack(app, "RepoStack");
+new RepoStack(app, "DiplomacyRepoStack");
 new EksStack(app, "DiplomacyEksStack");

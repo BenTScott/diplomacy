@@ -6,7 +6,6 @@ export class RepoStack extends Stack {
     super(scope, id, props);
 
     var repo = new Repository(this, "Repository", {
-      imageTagMutability: TagMutability.IMMUTABLE,
       repositoryName: "diplomacy",
     });
 

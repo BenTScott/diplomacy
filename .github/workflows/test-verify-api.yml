@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - "api/**"
-      - ".github/workflows/**"
+      - ".github/workflows/test-verify-api.yml"
 
 jobs:
   build:

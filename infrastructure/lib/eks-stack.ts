@@ -18,9 +18,9 @@ export class EksStack extends cdk.Stack {
       clusterName: "DiplomacyCluster",
     });
 
-    cluster.addHelmChart("NginxIngress", {
-      chart: "nginx-ingress",
-      repository: "https://helm.nginx.com/stable",
+    cluster.addHelmChart("IngressNginx", {
+      chart: "ingress-nginx",
+      repository: "https://kubernetes.github.io/ingress-nginx",
     });
 
     var chart = new ApiChart(new cdk8s.App(), "ApiChart");

@@ -1,5 +1,13 @@
 import { Chart } from "cdk8s";
-import { Container, Deployment, Pod, Service, ServiceType } from "cdk8s-plus";
+import {
+  Container,
+  Deployment,
+  Ingress,
+  IngressBackend,
+  Pod,
+  Service,
+  ServiceType,
+} from "cdk8s-plus";
 import { Construct } from "constructs";
 
 export class ApiChart extends Chart {
@@ -17,8 +25,11 @@ export class ApiChart extends Chart {
       })
     );
 
-    deployment.expose(80, {
-      serviceType: ServiceType.NODE_PORT,
+    var service = deployment.expose(80, {
+      serviceType: ServiceType.CLUSTER_IP,
     });
+
+    const ingress = new Ingress(this, "ApiIngress");
+    ingress.addRule("/api", IngressBackend.fromService(service));
   }
 }

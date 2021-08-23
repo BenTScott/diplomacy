@@ -22,6 +22,30 @@ export class EksStack extends cdk.Stack {
       chart: "ingress-nginx",
       repository: "https://kubernetes.github.io/ingress-nginx",
       release: "ingress-controller",
+      values: {
+        controller: {
+          extraArgs: {
+            "http-port": 8080,
+            "https-port": 8843,
+          },
+
+          containerPort: {
+            http: 8080,
+            https: 8443,
+          },
+
+          service: {
+            ports: {
+              http: 80,
+              https: 443,
+            },
+          },
+
+          image: {
+            allowPrivilegeEscalation: false,
+          },
+        },
+      },
     });
 
     var chart = new ApiChart(new cdk8s.App(), "ApiChart");

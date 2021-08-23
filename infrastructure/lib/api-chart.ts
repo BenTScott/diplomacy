@@ -18,7 +18,7 @@ export class ApiChart extends Chart {
     );
 
     deployment.expose(80, {
-      serviceType: ServiceType.LOAD_BALANCER,
+      serviceType: ServiceType.NODE_PORT,
     });
   }
 }

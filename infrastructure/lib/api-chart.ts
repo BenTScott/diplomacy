@@ -25,11 +25,11 @@ export class ApiChart extends Chart {
       })
     );
 
-    var service = deployment.expose(80, {
+    var service = deployment.expose(8080, {
       serviceType: ServiceType.CLUSTER_IP,
     });
 
     const ingress = new Ingress(this, "ApiIngress");
-    ingress.addRule("/api", IngressBackend.fromService(service));
+    ingress.addRule("/", IngressBackend.fromService(service));
   }
 }

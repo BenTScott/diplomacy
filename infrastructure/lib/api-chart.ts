@@ -43,7 +43,7 @@ export class ApiChart extends Chart {
       })
     );
 
-    var service2 = deployment.expose(8080, {
+    var service2 = deployment2.expose(8080, {
       serviceType: ServiceType.CLUSTER_IP,
     });
 

@@ -2,8 +2,8 @@
 import "source-map-support/register";
 import * as cdk from "@aws-cdk/core";
 import { RepoStack } from "../lib/repo-stack";
-import { EksStack } from "../lib/eks-stack";
+import { ApiStack } from "../lib/api-stack";
 
 const app = new cdk.App();
 new RepoStack(app, "DiplomacyRepoStack");
-new EksStack(app, "DiplomacyEksStack");
+new ApiStack(app, "DiplomacyApiStack");

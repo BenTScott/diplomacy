@@ -11,9 +11,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        endpoint: [users]
+
     steps:
       - uses: actions/checkout@v2
 
       - name: Run Docker Build
+        env:
+          ENDPOINT: ${{ matrix.endpoint }}
         working-directory: api
-        run: docker build .
+        run: docker build --build-arg endpoint=$ENDPOINT .

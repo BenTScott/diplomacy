@@ -4,9 +4,11 @@ WORKDIR /app
 COPY go.* ./
 RUN go mod download
 COPY . .
-RUN go build -o bin/api diplomacy-api/cmd
+ARG endpoint
+RUN echo ${endpoint}
+RUN go build -o bin/main diplomacy-api/cmd/$endpoint
 
 FROM alpine:latest
 COPY --from=build /app/bin/ .
 EXPOSE 8080
-ENTRYPOINT [ "./api" ]
+ENTRYPOINT [ "./main" ]

@@ -37,7 +37,7 @@ jobs:
           ENDPOINT: ${{ matrix.endpoint }}
         working-directory: api
         run: |
-          docker build --build-arg endpoint=$ENDPOINT -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./api
+          docker build --build-arg endpoint=$ENDPOINT -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest

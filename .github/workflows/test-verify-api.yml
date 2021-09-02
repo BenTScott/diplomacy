@@ -26,10 +26,11 @@ jobs:
     needs: [set-matrix]
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix: ${{ fromJson(needs.set-matrix.outputs.matrix) }}
+
     steps:
       - uses: actions/checkout@v2
-
-      - run: echo "${{ needs.set-matrix.outputs.matrix }}"
 
       - name: Run Docker Build
         env:

@@ -12,11 +12,6 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v2
-    - id: test-logging
-      shell: bash
-      run: |
-        TASKS=$(echo $(cat routes.json) | sed 's/ //g' )
-        echo $TASKS
     - id: set-matrix
       shell: bash
       run: |

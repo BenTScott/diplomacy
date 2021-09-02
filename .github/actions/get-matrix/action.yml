@@ -12,6 +12,9 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v2
+    - id: test-logging
+      shell: bash
+      run: echo "hello"
     - id: set-matrix
       shell: bash
       run: |

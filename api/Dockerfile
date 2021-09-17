@@ -5,7 +5,7 @@ COPY go.* ./
 RUN go mod download
 COPY . .
 ARG endpoint
-RUN go build -o bin/main diplomacy-api/cmd/$endpoint
+RUN go build -o bin/main diplomacy-api/cmd/route -tags $endpoint 
 
 FROM alpine:latest
 COPY --from=build /app/bin/ .

@@ -11,6 +11,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: infrastructure
+
     steps:
       - uses: actions/checkout@v2
 
@@ -19,17 +23,13 @@ jobs:
           node-version: "15"
 
       - name: Install Dependencies
-        working-directory: infrastructure
         run: npm ci
 
       - name: Build CDK Project
-        working-directory: infrastructure
         run: npm run build
 
       - name: Test CDK Project
-        working-directory: infrastructure
         run: npm run test
 
       - name: Synth cloud formation
-        working-directory: infrastructure
         run: npx cdk synth

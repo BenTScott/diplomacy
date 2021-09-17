@@ -8,12 +8,27 @@ on:
       - ".github/workflows/deploy-api.yml"
 
 jobs:
+  set-matrix:
+    runs-on: ubuntu-latest
+
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - id: set-matrix
+        uses: ./.github/actions/get-matrix
+        with:
+          file-path: ./routes.json
+
   deploy:
+    needs: [set-matrix]
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        endpoint: [users]
+        route: ${{ fromJson(needs.set-matrix.outputs.matrix) }}
 
     steps:
       - uses: actions/checkout@v2
@@ -32,9 +47,9 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: diplomacy
+          ECR_REPOSITORY: diplomacy_${{ matrix.endpoint }}
           IMAGE_TAG: ${{ github.sha }}
-          ENDPOINT: ${{ matrix.endpoint }}
+          ENDPOINT: ${{ matrix.path }}
         working-directory: api
         run: |
           docker build --build-arg endpoint=$ENDPOINT -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .

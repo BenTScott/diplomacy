@@ -1,0 +1,19 @@
+name: "Get Matrix"
+description: "Output matrix from a file"
+inputs:
+  file-path:
+    description: "File path to matrix info"
+    required: true
+outputs:
+  matrix:
+    description: "Matrix of values"
+    value: ${{ steps.set-matrix.outputs.matrix }}
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2
+    - id: set-matrix
+      shell: bash
+      run: |
+        TASKS=$(echo $(cat routes.json) | sed 's/ //g' )
+        echo "::set-output name=matrix::$TASKS"

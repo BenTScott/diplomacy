@@ -8,18 +8,33 @@ on:
       - ".github/workflows/test-verify-api.yml"
 
 jobs:
+  set-matrix:
+    runs-on: ubuntu-latest
+
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - id: set-matrix
+        uses: ./.github/actions/get-matrix
+        with:
+          file-path: ./routes.json
+
   build:
+    needs: [set-matrix]
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        endpoint: [users]
+        route: ${{ fromJson(needs.set-matrix.outputs.matrix) }}
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Run Docker Build
         env:
-          ENDPOINT: ${{ matrix.endpoint }}
+          ENDPOINT: ${{ matrix.route.path }}
         working-directory: api
         run: docker build --build-arg endpoint=$ENDPOINT .

@@ -17,6 +17,7 @@ export interface IRoute {
 export interface IRouteStackProps extends StackProps {
   route: IRoute;
   api: RestApi;
+  repository: Repository;
   table?: Table;
 }
 
@@ -24,18 +25,11 @@ export class RouteStack extends Stack {
   constructor(scope: App, id: string, props: IRouteStackProps) {
     super(scope, id, props);
 
-    const repo = new Repository(this, "Repository", {
-      repositoryName: `diplomacy_${props.route.path}`,
-      removalPolicy: RemovalPolicy.DESTROY,
-    });
-
-    repo.addLifecycleRule({ maxImageAge: Duration.days(30) });
-
     const resource = props.api.root.addResource(props.route.path);
 
     const handler = new DockerImageFunction(this, `${id}Function`, {
       functionName: `${props.route.path}Function`,
-      code: DockerImageCode.fromEcr(repo),
+      code: DockerImageCode.fromEcr(props.repository),
       environment: {
         TABLE_NAME: props?.table?.tableName ?? "",
       },

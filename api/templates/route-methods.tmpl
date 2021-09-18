@@ -1,0 +1,24 @@
+package ROUTE
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/aws/aws-lambda-go/events"
+)
+
+func GetROUTEUPPER(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	return events.APIGatewayProxyResponse{StatusCode: 500}, fmt.Errorf("Unhandled method - %v", req.HTTPMethod)
+}
+
+func PostROUTEUPPER(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	return events.APIGatewayProxyResponse{StatusCode: 500}, fmt.Errorf("Unhandled method - %v", req.HTTPMethod)
+}
+
+func PutROUTEUPPER(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	return events.APIGatewayProxyResponse{StatusCode: 500}, fmt.Errorf("Unhandled method - %v", req.HTTPMethod)
+}
+
+func DeleteROUTEUPPER(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	return events.APIGatewayProxyResponse{StatusCode: 500}, fmt.Errorf("Unhandled method - %v", req.HTTPMethod)
+}

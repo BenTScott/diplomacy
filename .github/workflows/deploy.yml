@@ -1,0 +1,123 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  set-matrix:
+    runs-on: ubuntu-latest
+
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - id: set-matrix
+        uses: ./.github/actions/get-matrix
+        with:
+          file-path: ./routes.json
+
+  deploy-ecr:
+    needs: [set-matrix]
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        route: ${{ fromJson(needs.set-matrix.outputs.matrix) }}
+
+    defaults:
+      run:
+        working-directory: infrastructure
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "15"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build CDK Project
+        run: npm run build
+
+      - name: Deploy CDK
+        env:
+          ENDPOINT: ${{ matrix.path }}
+        run: npx cdk deploy $(ENDPOINT^)EcrStack
+
+  deploy-api:
+    needs: [deploy-ecr, set-matrix]
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        route: ${{ fromJson(needs.set-matrix.outputs.matrix) }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: diplomacy_${{ matrix.endpoint }}
+          IMAGE_TAG: ${{ github.sha }}
+          ENDPOINT: ${{ matrix.path }}
+        working-directory: api
+        run: |
+          docker build --build-arg endpoint=$ENDPOINT -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+  deploy-cdk:
+    needs: [deploy-api]
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: infrastructure
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "15"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build CDK Project
+        run: npm run build
+
+      - name: Deploy CDK
+        run: npx cdk deploy --all

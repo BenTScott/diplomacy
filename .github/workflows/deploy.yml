@@ -74,7 +74,7 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: diplomacy_${{ matrix.endpoint }}
+          ECR_REPOSITORY: diplomacy_${{ matrix.path }}
           IMAGE_TAG: ${{ github.sha }}
           ENDPOINT: ${{ matrix.path }}
         working-directory: api

@@ -1,4 +1,4 @@
-// +build users
+// +build ROUTE
 
 package routes
 
@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	users "diplomacy-api/pkg/routes/users"
+	ROUTE "diplomacy-api/pkg/routes/ROUTE"
 
 	"github.com/aws/aws-lambda-go/events"
 )
@@ -14,13 +14,13 @@ import (
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	switch req.HTTPMethod {
 	case "GET":
-		return users.GetUsers(ctx, req)
+		return ROUTE.GetROUTEUPPER(ctx, req)
 	case "POST":
-		return users.PostUsers(ctx, req)
+		return ROUTE.PostROUTEUPPER(ctx, req)
 	case "PUT":
-		return users.PutUsers(ctx, req)
+		return ROUTE.PutROUTEUPPER(ctx, req)
 	case "DELETE":
-		return users.DeleteUsers(ctx, req)
+		return ROUTE.DeleteROUTEUPPER(ctx, req)
 	default:
 		return events.APIGatewayProxyResponse{StatusCode: 500}, fmt.Errorf("Unhandled method - %v", req.HTTPMethod)
 	}

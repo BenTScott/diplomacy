@@ -5,7 +5,7 @@
   "typescript.tsdk": "./client/node_modules/typescript/lib",
   "gopls": {
     "experimentalWorkspaceModule": true,
-    "build.buildFlags": ["default"]
+    "build.buildFlags": ["-tags=users"]
   },
   "eslint.workingDirectories": ["./infrastructure"],
   "editor.formatOnSave": true,

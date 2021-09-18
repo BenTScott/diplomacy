@@ -20,12 +20,7 @@ jobs:
           file-path: ./routes.json
 
   deploy-ecr:
-    needs: [set-matrix]
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        route: ${{ fromJson(needs.set-matrix.outputs.matrix) }}
 
     defaults:
       run:
@@ -52,11 +47,7 @@ jobs:
         run: npm run build
 
       - name: Deploy Ecr Repo
-        env:
-          STACK: ${{ matrix.path }}EcrStack
-        run: |
-          echo $STACK
-          npx cdk deploy ${STACK^}
+        run: npx cdk deploy "*EcrStack"
 
   deploy-api:
     needs: [deploy-ecr, set-matrix]

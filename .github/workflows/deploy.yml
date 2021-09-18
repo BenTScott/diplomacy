@@ -53,10 +53,10 @@ jobs:
 
       - name: Deploy Ecr Repo
         env:
-          ENDPOINT: ${{ matrix.path }}
+          STACK: ${{ matrix.path }}EcrStack
         run: |
-          echo $ENDPOINT
-          npx cdk deploy ${ENDPOINT^}EcrStack
+          echo $STACK
+          npx cdk deploy ${STACK^}
 
   deploy-api:
     needs: [deploy-ecr, set-matrix]

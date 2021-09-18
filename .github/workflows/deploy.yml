@@ -77,6 +77,7 @@ jobs:
           ECR_REPOSITORY: diplomacy_${{ matrix.path }}
           IMAGE_TAG: ${{ github.sha }}
           ENDPOINT: ${{ matrix.path }}
+          MATRIX: ${{ matrix }}
         working-directory: api
         run: |
           docker build --build-arg endpoint=$ENDPOINT -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .

@@ -1,12 +1,5 @@
 import { Stack, App, StackProps, Duration, RemovalPolicy } from "@aws-cdk/core";
-import { Repository, TagMutability } from "@aws-cdk/aws-ecr";
-import { LambdaIntegration, RestApi } from "@aws-cdk/aws-apigateway";
-import { Table } from "@aws-cdk/aws-dynamodb";
-import {
-  DockerImageCode,
-  DockerImageFunction,
-  Function,
-} from "@aws-cdk/aws-lambda";
+import { Repository } from "@aws-cdk/aws-ecr";
 import { IRoute } from "./route-stack";
 
 export interface IEcrStackProps extends StackProps {
